@@ -25,7 +25,8 @@ OC-Suite-安全超频：https://github.com/hanai3Bi/Switch-OC-Suite
 
 风灵月影：https://github.com/WerWolv/EdiZon
 
-后台应用：https://github.com/WerWolv/ovl-sysmodules
+后台应用：
+https://github.com/WerWolv/ovl-sysmodules
 
 蓝牙手柄插件：https://github.com/ndeadly/MissionControl
 
@@ -38,7 +39,8 @@ Translate ：The above is a list of all .ovl plug-ins used by Roast Duck Package
 
 接下来是关于烤鸭包相册的主要插件列表：
 
-DBI：https://github.com/rashevskyv/dbi
+DBI：
+https://github.com/rashevskyv/dbi
 
 DNS屏蔽检测：https://github.com/meganukebmp/Switch_90DNS_tester
 
@@ -46,7 +48,8 @@ MOD下载器：https://github.com/PoloNX/SimpleModDownloader
 
 MOD管理器：https://github.com/nadrino/SimpleModManager
 
-PSP模拟器：https://www.ppsspp.org
+PSP模拟器：
+https://www.ppsspp.org
 
 主题安装工具：https://github.com/exelix11/SwitchThemeInjector
 
@@ -54,7 +57,8 @@ PSP模拟器：https://www.ppsspp.org
 
 月光串流：https://github.com/XITRIX/Moonlight-Switch
 
-存档管理工具：https://github.com/J-D-K/JKSV
+存档管理工具：
+https://github.com/J-D-K/JKSV
 
 账号关联工具：https://github.com/rdmrocha/linkalho
 
