@@ -35,7 +35,7 @@ Switch串流插件：https://github.com/exelix11/SysDVR
 以上为烤鸭包使用的全部.ovl的插件列表，其中有一些作者是我的朋友，他们都非常的优秀，希望喜欢他们项目的朋友可以去支持一下他们的工作！
 比如ppkantorski、Cooler、XorTroll、WerWolv等人，他们真的非常热情，并且非常热爱这份工作，虽然其中有些人已经停止了Switch的开发，但是仍然在散发着预热，帮助后来的人做出更好的东西，我代表全体Switch玩家向他们表示感谢！
 
-Translate ：The above is a list of all .ovl plug-ins used by Roast Duck Package. Some of the authors are my friends. They are all very good. I hope friends who like their projects can support their work! For example, ppkantorski, Cooler, XorTroll, WerWolv, etc., they are really enthusiastic and love this job very much. Although some of them have stopped developing Switch, they are still eating and helping others to make better ones. Things, on behalf of all Switch players, I would like to express my gratitude to them!
+Translate ：The above is a list of all .ovl plug-ins used by Roast Duck Package. Some of the authors are my friends. They are all very good. I hope friends who like their projects can support their work! For example, ppkantorski, Cooler, XorTroll, WerWolv, etc., they are really enthusiastic and love this job very much. Although some of them have stopped developing Switch,They are still exuding their own warm-up and helping others to make better ones. Things, on behalf of all Switch players, I would like to express my gratitude to them!
 
 接下来是关于烤鸭包相册的主要插件列表：
 
