@@ -5,5 +5,5 @@
 
 
 I integrated the projects of many excellent plug-in makers into it to achieve a perfect presentation. Each of these projects is worthy of praise. In order to allow players to have a better experience and use them skillfully, I made the roast duck bag project. , namely **RoastDuck CFWPack**
-At the same time, if you are from China, you can also easily find its installation and usage tutorials on my social account. I will publish the updated content and usage instructions of the roast duck bag on ([Bilibili](https://space.bilibili.com/679023184))`. These are free projects, your support and attention are the inexhaustible motivation for my video and tutorial creation.
+At the same time, if you are from China, you can also easily find its installation and usage tutorials on my social account. I will publish the updated content and usage instructions of the roast duck bag on ([Bilibili](https://space.bilibili.com/679023184)). These are free projects, your support and attention are the inexhaustible motivation for my video and tutorial creation.
 
