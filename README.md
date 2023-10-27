@@ -68,4 +68,8 @@ PSP模拟器：https://www.ppsspp.org
 
 金手指管理器：https://github.com/tomvita/EdiZon-SE
 
+当前版本 使用说明：
+
+最新版本支持：官方主机系统版本17.0.0    大气层AMS1.6.1
+首先是关于开机第一屏的优化：![image](https://github.com/sskyNS/RoastDuck-CFWPack/assets/121209531/bd775203-27c6-4eb3-bf58-fff2f278051c)
 
