@@ -76,3 +76,5 @@ https://github.com/J-D-K/JKSV
 
 金手指管理器：https://github.com/tomvita/EdiZon-SE
 
+All the homebrews and open source projects here are the best gifts they bring to the community.
+I only use the “Roastduck CFWPack” to bring players the simplest and most happy game experience, which is also a trivial gift for you. Let us thank this harmonious community again.
