@@ -14,6 +14,9 @@ At the same time, if you are from China, you can also easily find its installati
 
 Ultrahand：https://github.com/ppkantorski/Ultrahand-Overlay
 
+sys-clk：
+https://github.com/retronx-team/sys-clk
+
 极限超频：https://github.com/rashevskyv/4IFIR 
 
 OC-Suite-安全超频：https://github.com/hanai3Bi/Switch-OC-Suite
