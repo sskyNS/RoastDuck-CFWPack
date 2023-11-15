@@ -40,9 +40,9 @@ Switch串流插件：https://github.com/exelix11/SysDVR
 
 以上为烤鸭包使用的全部.ovl的插件列表，其中有一些作者是我的朋友，他们都非常的优秀，希望喜欢他们项目的朋友可以去支持一下他们的工作！
 
-比如ppkantorski、Cooler、XorTroll、hanai3Bi、WerWolv等人，他们真的非常热情，并且非常热爱这份工作，虽然其中有些人已经停止了Switch的开发，但是仍然在散发着余热，帮助后来的人做出更好的东西，我代表全体Switch玩家向他们表示感谢！
+比如ppkantorski、Cooler、XorTroll、hanai3Bi、WerWolv、Storm21CH 等人，他们真的非常热情，并且非常热爱这份工作，虽然其中有些人已经停止了Switch的开发，但是仍然在散发着余热，帮助后来的人做出更好的东西，我代表全体Switch玩家向他们表示感谢！
 
-Translate ：The above is a list of all .ovl plug-ins used by Roast Duck Package. Some of the authors are my friends. They are all very good. I hope friends who like their projects can support their work! For example, ppkantorski, Cooler, XorTroll, hanai3Bi、WerWolv, etc., they are really enthusiastic and love this job very much. Although some of them have stopped developing Switch,they still stick to their original intentions and helping others to make better ones. On behalf of all Switch players, I would like to express my gratitude to them!
+Translate ：The above is a list of all .ovl plug-ins used by Roast Duck Package. Some of the authors are my friends. They are all very good. I hope friends who like their projects can support their work! For example, ppkantorski, Cooler, XorTroll, hanai3Bi、WerWolv,Storm21CH etc., they are really enthusiastic and love this job very much. Although some of them have stopped developing Switch,they still stick to their original intentions and helping others to make better ones. On behalf of all Switch players, I would like to express my gratitude to them!
 
 接下来是关于烤鸭包相册的主要插件：
 
@@ -78,6 +78,12 @@ https://github.com/J-D-K/JKSV
 电池电量校准：https://github.com/CTCaer/battery_desync_fix_nx 
 
 金手指管理器：https://github.com/tomvita/EdiZon-SE
+
+主界面的引导菜单：https://github.com/Storm21CH/ArgonNX-SE
+
+第二主界面的引导菜单：https://github.com/CTCaer/hekate
+
+Atmosphere-NX：https://github.com/Atmosphere-NX
 
 All the homebrews and open source projects here are the best gifts they bring to the community.
 I only use the “Roastduck CFWPack” to bring players the simplest and most happy game experience, which is also a trivial gift for you. Let us thank this harmonious community again.
