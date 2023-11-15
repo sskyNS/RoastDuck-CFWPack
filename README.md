@@ -10,7 +10,7 @@ I integrated the projects of many excellent plug-in makers into it to achieve a 
 
 At the same time, if you are from China, you can also easily find its installation and usage tutorials on my social account. I will publish the updated content and usage instructions of the roast duck Package on ([Bilibili](https://space.bilibili.com/679023184)). These are free projects, your support and attention are the inexhaustible motivation for my video and tutorial creation.
 
-所有插件原项目地址：
+所有插件原项目地址：[names not listed in order]
 
 Ultrahand：https://github.com/ppkantorski/Ultrahand-Overlay
 
@@ -44,7 +44,7 @@ Switch串流插件：https://github.com/exelix11/SysDVR
 
 Translate ：The above is a list of all .ovl plug-ins used by Roast Duck Package. Some of the authors are my friends. They are all very good. I hope friends who like their projects can support their work! For example, ppkantorski, Cooler, XorTroll, hanai3Bi、WerWolv,Storm21CH etc., they are really enthusiastic and love this job very much. Although some of them have stopped developing Switch,they still stick to their original intentions and helping others to make better ones. On behalf of all Switch players, I would like to express my gratitude to them!
 
-接下来是关于烤鸭包相册的主要插件：
+接下来是关于烤鸭包相册的主要插件：[names not listed in order]
 
 DBI：
 https://github.com/rashevskyv/dbi
