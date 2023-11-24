@@ -13,7 +13,7 @@ At the same time, if you are from China, you can also easily find its installati
 用户守则
 当你选择烤鸭包的时候，无论任何版本，默认你自愿遵守这个协议。
 
-烤鸭包只建议用户购买正版游戏进行游玩体验，原因是多样性的，仅以此处规则为主要宗旨。
+**烤鸭包只建议用户购买正版游戏进行游玩体验，原因是多样性的，仅以此处规则为主要宗旨。**
 
 注意：烤鸭包真实系统开放了联网功能，你可以自由游玩所有正版游戏，任何盗版在真实系统都会被强行禁止，这是烤鸭包的专有的防ban表现，而非你的机器或者系统出现了故障！
 
@@ -37,14 +37,14 @@ At the same time, if you are from China, you can also easily find its installati
 
 10. 🔒 守密信息: 请不要散布和分享可能违反知识产权或法律的资源、链接或信息。保护您自己和其他人的合法权益。
 
-所以，如果你确实想游玩盗版游戏，那么你需要根据教程进行虚拟系统的创建，这样才能确保你的全部盗版游戏能够启动并游玩！
-如果你只是为了追求烤鸭包的极限超频功能以及其他的软件自制，那么你可以选择在真实系统中使用，默认你将不会使用任何自制NSP前端以及各种盗版非法软件，并不会去修改存档以及金手指等，出现以下任何情况，您的机器可能会被ban机!
+**所以，如果你确实想游玩盗版游戏，那么你需要根据教程进行虚拟系统的创建，这样才能确保你的全部盗版游戏能够启动并游玩！
+如果你只是为了追求烤鸭包的极限超频功能以及其他的软件自制，那么你可以选择在真实系统中使用，默认你将不会使用任何自制NSP前端以及各种盗版非法软件，并不会去修改存档以及金手指等，出现以下任何情况，您的机器可能会被ban机!**
 
-English Translation: User Guidelines
+**English Translation: User Guidelines**
 
 When you choose to use the Roast Duck Package, regardless of any version, it is assumed that you voluntarily agree to comply with this agreement.
 
-Roast Duck Package only recommends users to purchase original games for gameplay experience, with diversity as the main principle here.
+**Roast Duck Package only recommends users to purchase original games for gameplay experience, with diversity as the main principle here.**
 
 Note: Roast Duck Package's real system has opened up online functionality, allowing you to freely play all original games. Any pirated versions will be forcibly banned on the real system. This is a proprietary anti-ban measure of Roast Duck Package, not a malfunction of your machine or system!
 
@@ -68,7 +68,7 @@ Note: Roast Duck Package's real system has opened up online functionality, allow
 
 10. 🔒 Confidential Information: Do not disseminate and share resources, links, or information that may violate intellectual property or laws. Protect your own and others' legitimate rights and interests.
 
-Therefore, if you do want to play pirated games, you need to create a virtual system according to the tutorial to ensure that all your pirated games can launch and be played! If you are only interested in the Roast Duck Package's extreme overclocking capabilities and other software homebrew, you can choose to use it on the real system, assuming that you will not use any homemade NSP front-ends or various pirated illegal software, and will not modify game saves or cheat codes, as any of these may result in your machine being banned!
+**Therefore, if you do want to play pirated games, you need to create a virtual system according to the tutorial to ensure that all your pirated games can launch and be played! If you are only interested in the Roast Duck Package's extreme overclocking capabilities and other software homebrew, you can choose to use it on the real system, assuming that you will not use any homemade NSP front-ends or various pirated illegal software, and will not modify game saves or cheat codes, as any of these may result in your machine being banned!**
 
 所有插件原项目地址：[names not listed in order]
 
