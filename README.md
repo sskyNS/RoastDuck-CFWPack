@@ -2,8 +2,9 @@
 这是烤鸭包的更新日志以及发布地址，我利用空闲时间制作中文版本的 Atmosphere CFWPack，因为我的社交账号名字中带有Roast Duck的缘故，所以我把它命名为“烤鸭包”！
 
 **This is a Chinese project, including the traditional Chinese version and the simplified version, namely zh-CN and zh-TW, which are mainly used for daily play on the modified Switch.**
-![2047022209461000-57B4628D2267231D57E0FC1078C0596D](https://github.com/sskyNS/RoastDuck-CFWPack/assets/121209531/6c2bda23-5bd6-4c11-91e9-934bf93b2b6d)
+![P`LH$Z61RZ)Z65(IQ}C1_NG](https://github.com/sskyNS/RoastDuck-CFWPack/assets/121209531/04486291-2058-4938-ad8f-468d0dd3f8f0)
 
+![2OET2CP{%0F47{1MTPVF)I1](https://github.com/sskyNS/RoastDuck-CFWPack/assets/121209531/9e4dc424-a573-48a2-99eb-8b9e47ed8309)
 
 
 I integrated the projects of many excellent plug-in makers into it to achieve a perfect presentation. Each of these projects is worthy of praise. In order to allow players to have a better experience and use them skillfully, I made the roast duck Package project. namely **RoastDuck CFWPack**！
