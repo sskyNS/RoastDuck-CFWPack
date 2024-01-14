@@ -132,7 +132,7 @@ https://github.com/J-D-K/JKSV
 
 模组转换工具：https://github.com/3096/ipswitch
 
-游戏时长记录工具：https://github.com/zdm65477730/NX-Activity-Log
+游戏时长记录工具：https://github.com/tallbl0nde/NX-Activity-Log
 
 金手指更新工具：https://github.com/HamletDuFromage/aio-switch-updater/releases
 
