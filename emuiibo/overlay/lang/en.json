@@ -1,0 +1,152 @@
+{
+    "strings": [
+        {
+            "key": "UpngInvalidFile",
+            "value": "文件已损坏"
+        },
+        {
+            "key": "UpngUnsupportedRgbPng",
+            "value": "请使用正确的PNG格式."
+        },
+        {
+            "key": "UpngUpscaleUnsupported",
+            "value": "图片尺寸过小."
+        },
+        {
+            "key": "UpngImageTooLarge",
+            "value": "图片尺寸过大."
+        },
+        {
+            "key": "UpngImageNotFound",
+            "value": "未识别到可用图片."
+        },
+        {
+            "key": "UpngNotPngImage",
+            "value": "不支持PNG格式的图片."
+        },
+        {
+            "key": "UpngMalformedPng",
+            "value": "图片格式错误."
+        },
+        {
+            "key": "UpngUnsupportedPng",
+            "value": "不支持这个PNG文件."
+        },
+        {
+            "key": "UpngUnsupportedInterlacing",
+            "value": "不支持图像扫描."
+        },
+        {
+            "key": "UpngUnsupportedColorFormat",
+            "value": "图片颜色格式错误."
+        },
+        {
+            "key": "UpngInvalidParameter",
+            "value": "错误的参数."
+        },
+        {
+            "key": "EmuiiboNotPresent",
+            "value": "emuiibo未正确安装."
+        },
+        {
+            "key": "Help",
+            "value": "工具说明"
+        },
+        {
+            "key": "EnableEmulation",
+            "value": "开启手办模拟"
+        },
+        {
+            "key": "DisableEmulation",
+            "value": "关闭手办模拟"
+        },
+        {
+            "key": "ToogleConnectVirtualAmiibo",
+            "value": "连接/断开 虚拟amiibo"
+        },
+        {
+            "key": "SelectFolderVirtualAmiibo",
+            "value": "选择目录/虚拟amiibo"
+        },
+        {
+            "key": "AddFavorite",
+            "value": "添加到收藏夹"
+        },
+        {
+            "key": "RemoveFavorite",
+            "value": "移出收藏夹"
+        },
+        {
+            "key": "ResetActiveVirtualAmiibo",
+            "value": "刷新已选择的手办"
+        },
+        {
+            "key": "EmulationStatus",
+            "value": "当前插件状态"
+        },
+        {
+            "key": "On",
+            "value": "开启"
+        },
+        {
+            "key": "Off",
+            "value": "关闭"
+        },
+        {
+            "key": "CurrentGameIntercepted",
+            "value": "游戏运行状态"
+        },
+        {
+            "key": "AvailableVirtualAmiibos",
+            "value": "可用的amiibo"
+        },
+        {
+            "key": "Intercepted",
+            "value": "已运行"
+        },
+        {
+            "key": "NotIntercepted",
+            "value": "未运行"
+        },
+        {
+            "key": "NoActiveVirtualAmiibo",
+            "value": "当前手办模拟状态"
+        },
+        {
+            "key": "Connected",
+            "value": "已连接"
+        },
+        {
+            "key": "Disconnected",
+            "value": "已断开"
+        },
+        {
+            "key": "ViewVirtualAmiibos",
+            "value": "查看全部手办列表"
+        },
+        {
+            "key": "ViewFavorites",
+            "value": "收藏列表"
+        },
+        {
+            "key": "SelectedArea",
+            "value": "所选择的amiibo数据"
+        },
+        {
+            "key": "NoVirtualAmiiboAreas",
+            "value": "当前amiibo预览图"
+        },
+        {
+            "key": "EnableRandomUuid",
+            "value": "开启无限刷amiibo"
+        },
+        {
+            "key": "DisableRandomUuid",
+            "value": "关闭无限刷amiibo"
+        },
+        {
+            "key": "RandomUuid",
+            "value": "无限amiibo状态"
+        }
+    ]
+}
