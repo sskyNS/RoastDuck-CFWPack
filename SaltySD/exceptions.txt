@@ -1,0 +1,56 @@
+;GRID: Autosport
+;1.4.0RC9, 1.5_46790, 1.8_49215 and 1.8.3_61741 crash, 1.4.1_45339 stucks in infinite loop
+0100DC800A602000
+
+;Luigi's Mansion 3
+;1.0.0-1.4.0 crash
+0100DCA0064A6000
+
+;YouTube
+;Stucks in infinite loop
+X01003A400C3DA000
+
+;Alien: Isolation
+;1.1_46609 - 1.1.4_60709 crash on first loading
+010075D00E8BA000
+
+;Grandia Collection
+;Only launcher is 64-bit, games are 32-bit
+0100E0600BBC8000
+
+;Immortals Fenyx Rising
+;1.0.3, 1.3.4 crash
+01004A600EC0A000
+
+;Stubbs the Zombie in Rebel Without a Pulse
+;1.0.0 - 1.0.2 crash on boot
+X0100964012528000
+
+;Olympic Games Tokyo 2020 – The Official Video Game
+;1.0.0 crash on boot
+010034B00E14C000
+
+;Mario Strikers: Battle League
+;1.0.0 crash on boot
+010019401051C000
+
+;The Lara Croft Collection
+;1.0.0 - Games in collection are crashing on boot, only launcher doesn't
+010079C017F5E001
+010079C017F5E002
+
+;Plants vs. Zombies: Battle for Neighborville
+;1.0.3 crash on boot
+0100C56010FD8000
+
+;EA SPORTS FC 24
+;1.0.0 - v1.55.bc14 crash
+0100BDB01A0E6000
+
+;Company of Heroes Collection
+;1.5_66915 crashes
+0100ABD0156F8000
+
+;Donkey Kong Country: Tropical Freeze
+;Crash at second level
+X0100C1F0051B6000
