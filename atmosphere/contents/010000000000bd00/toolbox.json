@@ -1,0 +1,5 @@
+{
+	"name"  : "蓝牙手柄插件",
+	"tid"   : "010000000000bd00",
+	"requires_reboot": true
+}
