@@ -1,0 +1,38 @@
+name: Atmosphere Builder
+
+on:
+  workflow_dispatch: # 允许手动触发
+  schedule:
+    - cron: '0 0 * * *' # 每天UTC时间0点运行
+
+jobs:
+  build-atmosphere:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up environment
+      run: |
+        chmod +x build_atmosphere.sh
+        
+    - name: Build Atmosphere Package
+      run: ./build_atmosphere.sh
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: atmosphere-package
+        path: SwitchSD_*.zip
+        
+    - name: Create Release
+      if: ${{ success() }}
+      uses: softprops/action-gh-release@v1
+      with:
+        files: SwitchSD_*.zip
+        tag_name: build-${{ github.run_id }}
+        name: "Atmosphere Package - ${{ steps.date.outputs.formattedDate }}"
+        body: "Automatically built Atmosphere package for Nintendo Switch"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
