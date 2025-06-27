@@ -3,6 +3,10 @@
 ![License](https://img.shields.io/badge/license-GPLv2.0-brightgreen.svg)
 ![Domain](https://img.shields.io/badge/Domain-Switch%20Software%20Development-blue.svg)
 ![Language](https://img.shields.io/badge/Language-C%20%2F%20C%2B%2B-lightgrey.svg)
+[![Latest Version](https://img.shields.io/github/v/release/sskyNS/RoastDuck-CFWPack?label=latest%20version&color=blue)](https://github.com/sskyNS/RoastDuck-CFWPack/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/ppkantorski/Ultrahand-Overlay/total?color=6f42c1)](https://github.com/sskyNS/RoastDuck-CFWPack/graphs/traffic)
+[![GitHub issues](https://img.shields.io/github/issues/sskyNS/RoastDuck-CFWPack?color=222222)](https://github.com/sskyNS/RoastDuck-CFWPack/issues)
+[![GitHub stars](https://img.shields.io/github/stars/sskyNS/RoastDuck-CFWPack)](https://github.com/sskyNS/RoastDuck-CFWPack/stargazers)
 
 **RoastDuck CFWPack** 是一个专为 Nintendo Switch 设备定制，整合了多个自制系统插件的中文 CFW Pack。
 
