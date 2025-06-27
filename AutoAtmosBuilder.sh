@@ -1,10 +1,29 @@
+
+# -------------------------------------------
+### 自动安装 jq 依赖
+if ! command -v jq &> /dev/null; then
+    echo "正在安装 jq..."
+    if [ "$(uname)" = "Linux" ]; then
+        sudo apt-get update
+        sudo apt-get install -y jq
+    elif [ "$(uname)" = "Darwin" ]; then
+        brew install jq
+    else
+        echo "错误：无法自动安装 jq，请手动安装"
+        exit 1
+    fi
+fi
+
+### 创建新文件夹
+[ -d SwitchSD ] && rm -rf SwitchSD
+[ -e description.txt ] && rm -f description.txt
+
+mkdir -p ./SwitchSD/{atmosphere/{config,hosts},switch/{DBI,Goldleaf,Checkpoint,.packages,.overlays},warmboot_mariko,themes,bootloader/{ini,res,payloads},config/{tesla,Tesla-Menu}}
+cd SwitchSD || exit 1
+
+
 #!/bin/sh
 set -e
-
-### Credit to the Authors at https://rentry.org/CFWGuides
-### Script created by Fraxalotl
-### Mod by huangqian8 & 烤鸭包的2025 & naixue666
-
 # -------------------------------------------
 ### Install jq if not already installed
 ### if [ "$OSTYPE" = "msys" ]; then
@@ -92,43 +111,43 @@ else
     mv fusee.bin ./bootloader/payloads
 fi
 
-# 如果不是预发布版本，下载 MissionControl 和 ldn_mitm
+### 仅当非预发布版时下载 MissionControl 和 ldn_mitm
 if [ "$is_prerelease" = "true" ]; then
-    echo "Latest Atmosphere release is a pre-release, skipping MissionControl and ldn_mitm downloads."
-    echo "检测到当前 Atmosphere 版本为预发布版本，已跳过 MissionControl 和 ldn_mitm 的下载步骤。"
+    echo "检测到 Atmosphere 预发布版本，跳过 MissionControl 和 ldn_mitm"
 else
-    echo "Detected that the current Atmosphere version is a stable release. Starting the download of MissionControl and ldn_mitm."
-    echo "检测到当前 Atmosphere 版本为正式版本，已开始 MissionControl 和 ldn_mitm 的下载步骤。"
-    # ### Fetch latest MissionControl from https://api.github.com/repos/ndeadly/MissionControl/releases/latest
-    curl -sL https://api.github.com/repos/ndeadly/MissionControl/releases/latest \
-      | jq '.tag_name' \
-      | xargs -I {} echo MissionControl {} >> ../description.txt
-    curl -sL https://api.github.com/repos/ndeadly/MissionControl/releases/latest \
-      | jq '.assets' | jq '.[0].browser_download_url' \
-      | xargs -I {} curl -sL {} -o MissionControl.zip
-    if [ $? -ne 0 ]; then
-        echo "MissionControl download\033[31m failed\033[0m."
-    else
-        echo "MissionControl download\033[32m success\033[0m."
+    echo "下载 MissionControl..."
+    mission_release=$(curl -sL https://api.github.com/repos/ndeadly/MissionControl/releases/latest)
+    mission_tag=$(echo "$mission_release" | jq -r '.tag_name')
+    echo "MissionControl $mission_tag" >> ../description.txt
+    
+    mission_url=$(echo "$mission_release" | jq -r '.assets[0].browser_download_url')
+    curl -sL "$mission_url" -o MissionControl.zip
+    
+    if [ $? -eq 0 ]; then
         unzip -oq MissionControl.zip
         rm MissionControl.zip
+        echo "MissionControl 下载\033[32m成功\033[0m"
+    else
+        echo "MissionControl 下载\033[31m失败\033[0m"
     fi
 
-    # ### Fetch latest ldn_mitm from https://api.github.com/repos/spacemeowx2/ldn_mitm/releases/latest
-    curl -sL https://api.github.com/repos/spacemeowx2/ldn_mitm/releases/latest \
-      | jq '.tag_name' \
-      | xargs -I {} echo ldn_mitm {} >> ../description.txt
-    curl -sL https://api.github.com/repos/spacemeowx2/ldn_mitm/releases/latest \
-      | jq '.assets' | jq '.[0].browser_download_url' \
-      | xargs -I {} curl -sL {} -o ldn_mitm.zip
-    if [ $? -ne 0 ]; then
-        echo "ldn_mitm download\033[31m failed\033[0m."
-    else
-        echo "ldn_mitm download\033[32m success\033[0m."
+    echo "下载 ldn_mitm..."
+    ldn_release=$(curl -sL https://api.github.com/repos/spacemeowx2/ldn_mitm/releases/latest)
+    ldn_tag=$(echo "$ldn_release" | jq -r '.tag_name')
+    echo "ldn_mitm $ldn_tag" >> ../description.txt
+    
+    ldn_url=$(echo "$ldn_release" | jq -r '.assets[0].browser_download_url')
+    curl -sL "$ldn_url" -o ldn_mitm.zip
+    
+    if [ $? -eq 0 ]; then
         unzip -oq ldn_mitm.zip
         rm ldn_mitm.zip
+        echo "ldn_mitm 下载\033[32m成功\033[0m"
+    else
+        echo "ldn_mitm 下载\033[31m失败\033[0m"
     fi
 fi
+
 # ### Fetch latest MissionControl from https://api.github.com/repos/ndeadly/MissionControl/releases/latest
 # curl -sL https://api.github.com/repos/ndeadly/MissionControl/releases/latest \
 #   | jq '.tag_name' \
