@@ -1,5 +1,6 @@
+#!/bin/sh
+set -e
 
-# -------------------------------------------
 ### 自动安装 jq 依赖
 if ! command -v jq &> /dev/null; then
     echo "正在安装 jq..."
@@ -21,96 +22,54 @@ fi
 mkdir -p ./SwitchSD/{atmosphere/{config,hosts},switch/{DBI,Goldleaf,Checkpoint,.packages,.overlays},warmboot_mariko,themes,bootloader/{ini,res,payloads},config/{tesla,Tesla-Menu}}
 cd SwitchSD || exit 1
 
-
-#!/bin/sh
-set -e
 # -------------------------------------------
-### Install jq if not already installed
-### if [ "$OSTYPE" = "msys" ]; then
-  # Windows
-  # @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
-  # chocolatey install jq
-# elif [ "$OSTYPE" = "darwin" ]; then
-  # MacOS
-  # brew install jq
-# elif [ "$OSTYPE" = "linux-gnu" ]; then
-  # Linux
-  # sudo apt-get install jq
-# fi
+### 获取 Atmosphere
+echo "正在下载 Atmosphere..."
+atmosphere_release=$(curl -sL https://api.github.com/repos/Atmosphere-NX/Atmosphere/releases)
+is_prerelease=$(echo "$atmosphere_release" | jq '.[0].prerelease')
 
+# 下载 Atmosphere
+atmosphere_url=$(echo "$atmosphere_release" | jq -r '.[0].assets[0].browser_download_url')
+curl -sL "$atmosphere_url" -o atmosphere.zip
 
-### Create a new folder for storing files
-if [ -d SwitchSD ]; then
-  rm -rf SwitchSD
-fi
-if [ -e description.txt ]; then
-  rm -rf description.txt
-fi
-mkdir -p ./SwitchSD/atmosphere/config
-mkdir -p ./SwitchSD/atmosphere/hosts
-mkdir -p ./SwitchSD/switch/DBI
-mkdir -p ./SwitchSD/switch/Goldleaf
-mkdir -p ./SwitchSD/switch/Checkpoint
-mkdir -p ./SwitchSD/switch
-mkdir -p ./SwitchSD/switch/.packages
-mkdir -p ./SwitchSD/warmboot_mariko
-mkdir -p ./SwitchSD/themes
-mkdir -p ./SwitchSD/bootloader
-mkdir -p ./SwitchSD/bootloader/ini
-mkdir -p ./SwitchSD/bootloader/res
-mkdir -p ./SwitchSD/bootloader/payloads
-mkdir -p ./SwitchSD/config/tesla
-mkdir -p ./SwitchSD/config/Tesla-Menu/
-mkdir -p ./SwitchSD/switch/.overlays
-cd SwitchSD
+# 下载 Fusee
+fusee_url=$(echo "$atmosphere_release" | jq -r '.[0].assets[] | select(.name == "fusee.bin") | .browser_download_url')
+curl -sL "$fusee_url" -o fusee.bin
 
-#Fetch latest atmosphere from https://github.com/Atmosphere-NX/Atmosphere/releases
-is_prerelease=$(curl -sL https://api.github.com/repos/Atmosphere-NX/Atmosphere/releases \
-  | jq '.[0].prerelease')
-curl -sL https://api.github.com/repos/Atmosphere-NX/Atmosphere/releases \
-  | jq '.[0].assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o atmosphere.zip
-curl -sL https://api.github.com/repos/Atmosphere-NX/Atmosphere/releases \
-  | jq -r '.[0].assets[] | select(.name == "fusee.bin") | .browser_download_url' \
-  | xargs -I {} curl -sL {} -o fusee.bin
 if [ $? -ne 0 ]; then
-    echo "atmosphere download\033[31m failed\033[0m."
+    echo "Atmosphere 下载\033[31m失败\033[0m"
 else
-    echo "atmosphere download\033[32m success\033[0m."
+    echo "Atmosphere 下载\033[32m成功\033[0m"
     unzip -oq atmosphere.zip
     rm atmosphere.zip
-
-    # 获取最新的Atmosphere版本号并写入description.txt
-    curl -sL https://api.github.com/repos/Atmosphere-NX/Atmosphere/releases \
-      | jq '.[0] | .name' \
-      | xargs -I {} echo {} >> ../description.txt
+    
+    # 记录版本信息
+    echo "$atmosphere_release" | jq -r '.[0].name' >> ../description.txt
 fi
 
-# curl -sL https://raw.github.com/naixue666/AutoAtmosBuilder/main/resources/atmosphere_1.8.0_test.zip -o atmosphere_1.8.0_test.zip
-# if [ $? -ne 0 ]; then
-#     echo "atmosphere_1.8.0_test download\033[31m failed\033[0m."
-# else
-#     echo "atmosphere_1.8.0_test download\033[32m success\033[0m."
-#     unzip -oq atmosphere_1.8.0_test.zip
-#     rm atmosphere_1.8.0_test.zip
-# fi
+# -------------------------------------------
+### 获取 Hekate + Nyx 中文版
+echo "正在下载 Hekate + Nyx 中文版..."
+hekate_release=$(curl -sL https://api.github.com/repos/easyworld/hekate/releases/latest)
+hekate_name=$(echo "$hekate_release" | jq -r '.name')
 
-### Fetch latest Hekate + Nyx Chinese from https://github.com/easyworld/hekate/releases/latest
-curl -sL https://api.github.com/repos/easyworld/hekate/releases/latest \
-  | jq '.name' \
-  | xargs -I {} echo {} >> ../description.txt
-curl -sL https://api.github.com/repos/easyworld/hekate/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o hekate.zip
+# 记录版本信息
+echo "$hekate_name" >> ../description.txt
+
+# 下载 Hekate
+hekate_url=$(echo "$hekate_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$hekate_url" -o hekate.zip
+
 if [ $? -ne 0 ]; then
-    echo "Hekate + Nyx download\033[31m failed\033[0m."
+    echo "Hekate + Nyx 下载\033[31m失败\033[0m"
 else
-    echo "Hekate + Nyx download\033[32m success\033[0m."
+    echo "Hekate + Nyx 下载\033[32m成功\033[0m"
     unzip -oq hekate.zip
     rm hekate.zip
-    mv fusee.bin ./bootloader/payloads
+    mv fusee.bin ./bootloader/payloads/
 fi
 
+# -------------------------------------------
 ### 仅当非预发布版时下载 MissionControl 和 ldn_mitm
 if [ "$is_prerelease" = "true" ]; then
     echo "检测到 Atmosphere 预发布版本，跳过 MissionControl 和 ldn_mitm"
@@ -148,479 +107,402 @@ else
     fi
 fi
 
-# ### Fetch latest MissionControl from https://api.github.com/repos/ndeadly/MissionControl/releases/latest
-# curl -sL https://api.github.com/repos/ndeadly/MissionControl/releases/latest \
-#   | jq '.tag_name' \
-#   | xargs -I {} echo MissionControl {} >> ../description.txt
-# curl -sL https://api.github.com/repos/ndeadly/MissionControl/releases/latest \
-#   | jq '.assets' | jq '.[0].browser_download_url' \
-#   | xargs -I {} curl -sL {} -o MissionControl.zip
-# if [ $? -ne 0 ]; then
-#     echo "MissionControl download\033[31m failed\033[0m."
-# else
-#     echo "MissionControl download\033[32m success\033[0m."
-#     unzip -oq MissionControl.zip
-#     rm MissionControl.zip
-# fi
+# -------------------------------------------
+### 其他组件下载
+echo "下载 SaltyNX..."
+salty_release=$(curl -sL https://api.github.com/repos/masagrator/SaltyNX/releases/latest)
+salty_name=$(echo "$salty_release" | jq -r '.name')
+echo "$salty_name" >> ../description.txt
 
-# ### Fetch latest ldn_mitm from https://api.github.com/repos/spacemeowx2/ldn_mitm/releases/latest
-# curl -sL https://api.github.com/repos/spacemeowx2/ldn_mitm/releases/latest \
-#   | jq '.tag_name' \
-#   | xargs -I {} echo ldn_mitm {} >> ../description.txt
-# curl -sL https://api.github.com/repos/spacemeowx2/ldn_mitm/releases/latest \
-#   | jq '.assets' | jq '.[0].browser_download_url' \
-#   | xargs -I {} curl -sL {} -o ldn_mitm.zip
-# if [ $? -ne 0 ]; then
-#     echo "ldn_mitm download\033[31m failed\033[0m."
-# else
-#     echo "ldn_mitm download\033[32m success\033[0m."
-#     unzip -oq ldn_mitm.zip
-#     rm ldn_mitm.zip
-# fi
-
-### Fetch latest ldn_mitm from https://api.github.com/repos/masagrator/SaltyNX/releases/latest
-curl -sL https://api.github.com/repos/masagrator/SaltyNX/releases/latest \
-  | jq '.name' \
-  | xargs -I {} echo {} >> ../description.txt
-curl -sL https://api.github.com/repos/masagrator/SaltyNX/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o SaltyNX.zip
-if [ $? -ne 0 ]; then
-    echo "SaltyNX download\033[31m failed\033[0m."
-else
-    echo "SaltyNX download\033[32m success\033[0m."
+salty_url=$(echo "$salty_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$salty_url" -o SaltyNX.zip
+if [ $? -eq 0 ]; then
     unzip -oq SaltyNX.zip
     rm SaltyNX.zip
+    echo "SaltyNX 下载\033[32m成功\033[0m"
+else
+    echo "SaltyNX 下载\033[31m失败\033[0m"
 fi
 
-### Fetch latest SysDVR from hhttps://github.com/exelix11/SysDVR
-curl -sL https://api.github.com/repos/exelix11/SysDVR/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo SysDVR {} >> ../description.txt
-curl -sL https://api.github.com/repos/exelix11/SysDVR/releases/latest \
-  | jq '.assets' | jq '.[7].browser_download_url' \
-  | xargs -I {} curl -sL {} -o SysDVR.zip
-if [ $? -ne 0 ]; then
-    echo "SysDVR download\033[31m failed\033[0m."
-else
-    echo "SysDVR download\033[32m success\033[0m."
+echo "下载 SysDVR..."
+sysdvr_release=$(curl -sL https://api.github.com/repos/exelix11/SysDVR/releases/latest)
+sysdvr_tag=$(echo "$sysdvr_release" | jq -r '.tag_name')
+echo "SysDVR $sysdvr_tag" >> ../description.txt
+
+sysdvr_url=$(echo "$sysdvr_release" | jq -r '.assets[7].browser_download_url')
+curl -sL "$sysdvr_url" -o SysDVR.zip
+if [ $? -eq 0 ]; then
     unzip -oq SysDVR.zip
     rm SysDVR.zip
+    echo "SysDVR 下载\033[32m成功\033[0m"
+else
+    echo "SysDVR 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest sys-clk from https://api.github.com/repos/retronx-team/sys-clk/releases/latest
-curl -sL https://api.github.com/repos/retronx-team/sys-clk/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo sys-clk {} >> ../description.txt
-curl -sL https://api.github.com/repos/retronx-team/sys-clk/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o sys_clk.zip
-if [ $? -ne 0 ]; then
-    echo "sys-clk download\033[31m failed\033[0m."
-else
-    echo "sys-clk download\033[32m success\033[0m."
+echo "下载 sys-clk..."
+sysclk_release=$(curl -sL https://api.github.com/repos/retronx-team/sys-clk/releases/latest)
+sysclk_tag=$(echo "$sysclk_release" | jq -r '.tag_name')
+echo "sys-clk $sysclk_tag" >> ../description.txt
+
+sysclk_url=$(echo "$sysclk_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$sysclk_url" -o sys_clk.zip
+if [ $? -eq 0 ]; then
     unzip -oq sys_clk.zip
     rm sys_clk.zip
+    echo "sys-clk 下载\033[32m成功\033[0m"
+else
+    echo "sys-clk 下载\033[31m失败\033[0m"
 fi
 
-
+echo "下载 Tesla..."
 curl -sL https://raw.github.com/naixue666/AutoAtmosBuilder/main/resources/Tesla.zip -o Tesla.zip
-if [ $? -ne 0 ]; then
-    echo "Tesla download\033[31m failed\033[0m."
-else
-    echo "Tesla download\033[32m success\033[0m."
+if [ $? -eq 0 ]; then
     unzip -oq Tesla.zip
     rm Tesla.zip
+    echo "Tesla 下载\033[32m成功\033[0m"
+else
+    echo "Tesla 下载\033[31m失败\033[0m"
 fi
 
-# ### Fetch lastest Ultrahand-Overlay from https://github.com/ppkantorski/Ultrahand-Overlay/releases/latest
-# curl -sL https://api.github.com/repos/ppkantorski/Ultrahand-Overlay/releases/latest \
-#   | jq '.tag_name' \
-#   | xargs -I {} echo Ultrahand-Overlay {} >> ../description.txt
-# curl -sL https://api.github.com/repos/ppkantorski/Ultrahand-Overlay/releases/latest \
-#   | jq '.assets' | jq '.[1].browser_download_url' \
-#   | xargs -I {} curl -sL {} -o ovlmenu.ovl
-# if [ $? -ne 0 ]; then
-#     echo "Ultrahand-Overlay download\033[31m failed\033[0m."
-# else
-#     echo "Ultrahand-Overlay download\033[32m success\033[0m."
-#     mv ovlmenu.ovl ./switch/.overlays
-# fi
-
-### Fetch latest boot.dat-Resources from https://github.com/naixue666/SwitchScript
+echo "下载 boot.dat..."
 curl -sL https://raw.github.com/naixue666/naixue_nx_atm_Auto_Script/main/resources/boot.dat -o boot.dat
-if [ $? -ne 0 ]; then
-    echo "boot.dat-Resources download\033[31m failed\033[0m."
+if [ $? -eq 0 ]; then
+    echo "boot.dat 下载\033[32m成功\033[0m"
 else
-    echo "boot.dat-Resources download\033[32m success\033[0m."
+    echo "boot.dat 下载\033[31m失败\033[0m"
 fi
-### Fetch latest SigPatches.zip from https://raw.github.com/naixue666/naixue_nx_atm_Auto_Script/main/resources/
-curl -sL https://sigmapatches.su/sigpatches.zip?16.10.2024 -o sigpatches.zip
-if [ $? -ne 0 ]; then
-    echo "SigPatches download\033[31m failed\033[0m."
-else
-    echo "SigPatches download\033[32m success\033[0m."
+
+echo "下载 SigPatches..."
+curl -sL "https://sigmapatches.su/sigpatches.zip?$(date +%d.%m.%Y)" -o sigpatches.zip
+if [ $? -eq 0 ]; then
     unzip -oq sigpatches.zip
     rm sigpatches.zip
-fi
-### Fetch latest Bootloader-Resources from https://github.com/naixue666/SwitchScript
-curl -sL https://raw.github.com/naixue666/AutoAtmosBuilder/main/resources/bootloader.zip -o bootloader.zip
-if [ $? -ne 0 ]; then
-    echo "Bootloader-Resources download\033[31m failed\033[0m."
+    echo "SigPatches 下载\033[32m成功\033[0m"
 else
-    echo "Bootloader-Resources download\033[32m success\033[0m."
+    echo "SigPatches 下载\033[31m失败\033[0m"
+fi
+
+echo "下载 Bootloader 资源..."
+curl -sL https://raw.github.com/naixue666/AutoAtmosBuilder/main/resources/bootloader.zip -o bootloader.zip
+if [ $? -eq 0 ]; then
     unzip -oq bootloader.zip
     rm bootloader.zip
+    echo "Bootloader 资源下载\033[32m成功\033[0m"
+else
+    echo "Bootloader 资源下载\033[31m失败\033[0m"
 fi
-### Fetch latest picofly_toolbox_0.2.bin from
+
+echo "下载 picofly_toolbox..."
 curl -sL https://raw.github.com/Ansem-SoD/Picofly/main/Firmwares/picofly_toolbox_0.2.bin -o picofly_toolbox_0.2.bin
-if [ $? -ne 0 ]; then
-    echo "picofly_toolbox download\033[31m failed\033[0m."
-else
-    echo "picofly_toolbox download\033[32m success\033[0m."
+if [ $? -eq 0 ]; then
     mv picofly_toolbox_0.2.bin ./bootloader/payloads
+    echo "picofly_toolbox 下载\033[32m成功\033[0m"
     echo "picofly_toolbox_0.2" >> ../description.txt
+else
+    echo "picofly_toolbox 下载\033[31m失败\033[0m"
 fi
 
-# ### Fetch latest Lockpick_RCM.bin from https://github.com/Decscots/Lockpick_RCM/releases/latest
-# curl -sL https://api.github.com/repos/Decscots/Lockpick_RCM/releases/latest \
-#   | jq '.tag_name' \
-#   | xargs -I {} echo Lockpick_RCM {} >> ../description.txt
-# curl -sL https://api.github.com/repos/Decscots/Lockpick_RCM/releases/latest \
-#   | jq '.assets' | jq '.[0].browser_download_url' \
-#   | xargs -I {} curl -sL {} -o Lockpick_RCM.bin
-# if [ $? -ne 0 ]; then
-#     echo "Lockpick_RCM download\033[31m failed\033[0m."
-# else
-#     echo "Lockpick_RCM download\033[32m success\033[0m."
-#     mv Lockpick_RCM.bin ./bootloader/payloads
-# fi
+echo "下载 hwfly-toolbox..."
+hwfly_release=$(curl -sL https://api.github.com/repos/hwfly-nx/hwfly-toolbox/releases/latest)
+hwfly_tag=$(echo "$hwfly_release" | jq -r '.tag_name')
+echo "hwfly-toolbox $hwfly_tag" >> ../description.txt
 
-### Fetch latest hwfly_toolbox.bin from https://github.com/hwfly-nx/hwfly-toolbox/releases/latest
-curl -sL https://api.github.com/repos/hwfly-nx/hwfly-toolbox/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo hwfly-toolbox {} >> ../description.txt
-curl -sL https://api.github.com/repos/hwfly-nx/hwfly-toolbox/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o hwfly_toolbox.bin
-if [ $? -ne 0 ]; then
-    echo "hwfly-toolbox download\033[31m failed\033[0m."
-else
-    echo "hwfly-toolbox download\033[32m success\033[0m."
+hwfly_url=$(echo "$hwfly_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$hwfly_url" -o hwfly_toolbox.bin
+if [ $? -eq 0 ]; then
     mv hwfly_toolbox.bin ./bootloader/payloads
+    echo "hwfly-toolbox 下载\033[32m成功\033[0m"
+else
+    echo "hwfly-toolbox 下载\033[31m失败\033[0m"
 fi
 
-# ### Fetch latest TegraExplorer.bin form https://github.com/zdm65477730/TegraExplorer/releases
-# curl -sL https://api.github.com/repos/zdm65477730/TegraExplorer/releases/latest \
-#   | jq '.tag_name' \
-#   | xargs -I {} echo TegraExplorer {} >> ../description.txt
-# curl -sL https://api.github.com/repos/zdm65477730/TegraExplorer/releases/latest \
-#   | jq '.assets' | jq '.[0].browser_download_url' \
-#   | xargs -I {} curl -sL {} -o TegraExplorer.bin
-# if [ $? -ne 0 ]; then
-#     echo "TegraExplorer download\033[31m failed\033[0m."
-# else
-#     echo "TegraExplorer download\033[32m success\033[0m."
-#     mv TegraExplorer.bin ./bootloader/payloads
-# fi
+echo "下载 CommonProblemResolver..."
+cpr_release=$(curl -sL https://api.github.com/repos/zdm65477730/CommonProblemResolver/releases/latest)
+cpr_tag=$(echo "$cpr_release" | jq -r '.tag_name')
+echo "CommonProblemResolver $cpr_tag" >> ../description.txt
 
-### Fetch latest CommonProblemResolver.bin form https://github.com/zdm65477730/CommonProblemResolver/releases
-curl -sL https://api.github.com/repos/zdm65477730/CommonProblemResolver/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo CommonProblemResolver {} >> ../description.txt
-curl -sL https://api.github.com/repos/zdm65477730/CommonProblemResolver/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o CommonProblemResolver.bin
-if [ $? -ne 0 ]; then
-    echo "CommonProblemResolver download\033[31m failed\033[0m."
-else
-    echo "CommonProblemResolver download\033[32m success\033[0m."
+cpr_url=$(echo "$cpr_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$cpr_url" -o CommonProblemResolver.bin
+if [ $? -eq 0 ]; then
     mv CommonProblemResolver.bin ./bootloader/payloads
+    echo "CommonProblemResolver 下载\033[32m成功\033[0m"
+else
+    echo "CommonProblemResolver 下载\033[31m失败\033[0m"
 fi
 
+echo "下载 wiliwili..."
+wiliwili_release=$(curl -sL https://api.github.com/repos/xfangfang/wiliwili/releases/latest)
+wiliwili_tag=$(echo "$wiliwili_release" | jq -r '.tag_name')
+echo "wiliwili $wiliwili_tag" >> ../description.txt
 
-### Fetch lastest wiliwili from https://github.com/xfangfang/wiliwili/releases/latest
-curl -sL https://api.github.com/repos/xfangfang/wiliwili/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo wiliwili {} >> ../description.txt
-curl -sL https://api.github.com/repos/xfangfang/wiliwili/releases/latest \
-  | jq '.assets' | jq '.[9].browser_download_url' \
-  | xargs -I {} curl -sL {} -o wiliwili-NintendoSwitch.zip
-if [ $? -ne 0 ]; then
-    echo "wiliwili download\033[31m failed\033[0m."
-else
-    echo "wiliwili download\033[32m success\033[0m."
+wiliwili_url=$(echo "$wiliwili_release" | jq -r '.assets[9].browser_download_url')
+curl -sL "$wiliwili_url" -o wiliwili-NintendoSwitch.zip
+if [ $? -eq 0 ]; then
     unzip -oq wiliwili-NintendoSwitch.zip
     mkdir -p ./switch/wiliwili
     mv wiliwili/wiliwili.nro ./switch/wiliwili
     rm -rf wiliwili
     rm wiliwili-NintendoSwitch.zip
+    echo "wiliwili 下载\033[32m成功\033[0m"
+else
+    echo "wiliwili 下载\033[31m失败\033[0m"
 fi
 
+echo "下载 HB-Appstore..."
+appstore_release=$(curl -sL https://api.github.com/repos/fortheusers/hb-appstore/releases/latest)
+appstore_tag=$(echo "$appstore_release" | jq -r '.tag_name')
+echo "HB-Appstore $appstore_tag" >> ../description.txt
 
-### Fetch lastest HB-Appstore from https://github.com/fortheusers/hb-appstore/releases/latest
-curl -sL https://api.github.com/repos/fortheusers/hb-appstore/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo HB-Appstore {} >> ../description.txt
-curl -sL https://api.github.com/repos/fortheusers/hb-appstore/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o appstore.nro
-if [ $? -ne 0 ]; then
-    echo "HB-Appstore download\033[31m failed\033[0m."
-else
-    echo "HB-Appstore download\033[32m success\033[0m."
+appstore_url=$(echo "$appstore_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$appstore_url" -o appstore.nro
+if [ $? -eq 0 ]; then
     mv appstore.nro ./switch
+    echo "HB-Appstore 下载\033[32m成功\033[0m"
+else
+    echo "HB-Appstore 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest Goldleaf from https://github.com/XorTroll/Goldleaf/releases/latest
-curl -sL https://api.github.com/repos/XorTroll/Goldleaf/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo Goldleaf {} >> ../description.txt
-curl -sL https://api.github.com/repos/XorTroll/Goldleaf/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o Goldleaf.nro
-if [ $? -ne 0 ]; then
-    echo "Goldleaf download\033[31m failed\033[0m."
-else
-    echo "Goldleaf download\033[32m success\033[0m."
+echo "下载 Goldleaf..."
+goldleaf_release=$(curl -sL https://api.github.com/repos/XorTroll/Goldleaf/releases/latest)
+goldleaf_tag=$(echo "$goldleaf_release" | jq -r '.tag_name')
+echo "Goldleaf $goldleaf_tag" >> ../description.txt
+
+goldleaf_url=$(echo "$goldleaf_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$goldleaf_url" -o Goldleaf.nro
+if [ $? -eq 0 ]; then
     mv Goldleaf.nro ./switch/Goldleaf
+    echo "Goldleaf 下载\033[32m成功\033[0m"
+else
+    echo "Goldleaf 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest Switch_90DNS_tester from https://github.com/meganukebmp/Switch_90DNS_tester/releases/latest
-curl -sL https://api.github.com/repos/meganukebmp/Switch_90DNS_tester/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo Switch_90DNS_tester {} >> ../description.txt
-curl -sL https://api.github.com/repos/meganukebmp/Switch_90DNS_tester/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o Switch_90DNS_tester.nro
-if [ $? -ne 0 ]; then
-    echo "Switch_90DNS_tester download\033[31m failed\033[0m."
-else
-    echo "Switch_90DNS_tester download\033[32m success\033[0m."
+echo "下载 Switch_90DNS_tester..."
+dns_tester_release=$(curl -sL https://api.github.com/repos/meganukebmp/Switch_90DNS_tester/releases/latest)
+dns_tester_tag=$(echo "$dns_tester_release" | jq -r '.tag_name')
+echo "Switch_90DNS_tester $dns_tester_tag" >> ../description.txt
+
+dns_tester_url=$(echo "$dns_tester_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$dns_tester_url" -o Switch_90DNS_tester.nro
+if [ $? -eq 0 ]; then
     mv Switch_90DNS_tester.nro ./switch
+    echo "Switch_90DNS_tester 下载\033[32m成功\033[0m"
+else
+    echo "Switch_90DNS_tester 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest Checkpoint from https://github.com/BernardoGiordano/Checkpoint/releases/latest
-curl -sL https://api.github.com/repos/BernardoGiordano/Checkpoint/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo Checkpoint {} >> ../description.txt
-curl -sL https://api.github.com/repos/BernardoGiordano/Checkpoint/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o Checkpoint.nro
-if [ $? -ne 0 ]; then
-    echo "Checkpoint download\033[31m failed\033[0m."
-else
-    echo "Checkpoint download\033[32m success\033[0m."
+echo "下载 Checkpoint..."
+checkpoint_release=$(curl -sL https://api.github.com/repos/BernardoGiordano/Checkpoint/releases/latest)
+checkpoint_tag=$(echo "$checkpoint_release" | jq -r '.tag_name')
+echo "Checkpoint $checkpoint_tag" >> ../description.txt
+
+checkpoint_url=$(echo "$checkpoint_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$checkpoint_url" -o Checkpoint.nro
+if [ $? -eq 0 ]; then
     mv Checkpoint.nro ./switch/Checkpoint
+    echo "Checkpoint 下载\033[32m成功\033[0m"
+else
+    echo "Checkpoint 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest DBI from https://github.com/rashevskyv/dbi/releases/latest
-#curl -sL https://api.github.com/repos/rashevskyv/dbi/releases/latest \
-  #| jq '.name' \
-  #| xargs -I {} echo {} >> ../description.txt
-#curl -sL https://api.github.com/repos/rashevskyv/dbi/releases/latest \
-  #| jq '.assets' | jq '.[1].browser_download_url' \
-  #| xargs -I {} curl -sL {} -o DBI.nro
-#if [ $? -ne 0 ]; then
-   # echo "DBI download\033[31m failed\033[0m."
-#else
-    #echo "DBI download\033[32m success\033[0m."
-    #mv DBI.nro ./switch/DBI
-#fi
-
+echo "下载 DBI..."
 curl -sL https://raw.github.com/naixue666/AutoAtmosBuilder/main/resources/DBI.nro -o DBI.nro
-if [ $? -ne 0 ]; then
-    echo "DBI.nro download\033[31m failed\033[0m."
-else
-    echo "DBI.nro download\033[32m success\033[0m."
+if [ $? -eq 0 ]; then
     mv DBI.nro ./switch/DBI
+    echo "DBI.nro 下载\033[32m成功\033[0m"
+else
+    echo "DBI.nro 下载\033[31m失败\033[0m"
 fi
+
 curl -sL https://raw.github.com/naixue666/AutoAtmosBuilder/main/resources/.DBI.nro.star -o .DBI.nro.star
-if [ $? -ne 0 ]; then
-    echo ".DBI.nro.star download\033[31m failed\033[0m."
-else
-    echo ".DBI.nro.star download\033[32m success\033[0m."
+if [ $? -eq 0 ]; then
     mv .DBI.nro.star ./switch/DBI
+    echo ".DBI.nro.star 下载\033[32m成功\033[0m"
+else
+    echo ".DBI.nro.star 下载\033[31m失败\033[0m"
 fi
+
 curl -sL https://raw.github.com/naixue666/AutoAtmosBuilder/main/resources/linkalho.nro -o linkalho.nro
-if [ $? -ne 0 ]; then
-    echo "linkalho.nro download\033[31m failed\033[0m."
-else
-    echo "linkalho.nro download\033[32m success\033[0m."
+if [ $? -eq 0 ]; then
     mv linkalho.nro ./switch
-fi
-### Fetch lastest Awoo Installer from https://github.com/dragonflylee/Awoo-Installer/releases/latest
-curl -sL https://api.github.com/repos/dragonflylee/Awoo-Installer/releases/latest \
-  | jq '.name' \
-  | xargs -I {} echo {} >> ../description.txt
-curl -sL https://api.github.com/repos/dragonflylee/Awoo-Installer/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o Awoo-Installer.zip
-if [ $? -ne 0 ]; then
-    echo "Awoo Installer download\033[31m failed\033[0m."
+    echo "linkalho.nro 下载\033[32m成功\033[0m"
 else
-    echo "Awoo Installer download\033[32m success\033[0m."
+    echo "linkalho.nro 下载\033[31m失败\033[0m"
+fi
+
+echo "下载 Awoo Installer..."
+awoo_release=$(curl -sL https://api.github.com/repos/dragonflylee/Awoo-Installer/releases/latest)
+awoo_name=$(echo "$awoo_release" | jq -r '.name')
+echo "$awoo_name" >> ../description.txt
+
+awoo_url=$(echo "$awoo_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$awoo_url" -o Awoo-Installer.zip
+if [ $? -eq 0 ]; then
     unzip -oq Awoo-Installer.zip
     rm Awoo-Installer.zip
+    echo "Awoo Installer 下载\033[32m成功\033[0m"
+else
+    echo "Awoo Installer 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest Hekate-toolbox from https://github.com/WerWolv/Hekate-Toolbox/releases/latest
-curl -sL https://api.github.com/repos/WerWolv/Hekate-Toolbox/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo HekateToolbox {} >> ../description.txt
-curl -sL https://api.github.com/repos/WerWolv/Hekate-Toolbox/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o HekateToolbox.nro
-if [ $? -ne 0 ]; then
-    echo "HekateToolbox download\033[31m failed\033[0m."
-else
-    echo "HekateToolbox download\033[32m success\033[0m."
+echo "下载 HekateToolbox..."
+hekate_toolbox_release=$(curl -sL https://api.github.com/repos/WerWolv/Hekate-Toolbox/releases/latest)
+hekate_toolbox_tag=$(echo "$hekate_toolbox_release" | jq -r '.tag_name')
+echo "HekateToolbox $hekate_toolbox_tag" >> ../description.txt
+
+hekate_toolbox_url=$(echo "$hekate_toolbox_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$hekate_toolbox_url" -o HekateToolbox.nro
+if [ $? -eq 0 ]; then
     mv HekateToolbox.nro ./switch
+    echo "HekateToolbox 下载\033[32m成功\033[0m"
+else
+    echo "HekateToolbox 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest NX-Activity-Log from https://github.com/zdm65477730/NX-Activity-Log/releases/latest
-curl -sL https://api.github.com/repos/zdm65477730/NX-Activity-Log/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo NX-Activity-Log {} >> ../description.txt
-curl -sL https://api.github.com/repos/zdm65477730/NX-Activity-Log/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o NX-Activity-Log.nro
-if [ $? -ne 0 ]; then
-    echo "NX-Activity-Log download\033[31m failed\033[0m."
-else
-    echo "NX-Activity-Log download\033[32m success\033[0m."
-    # unzip -oq NX-Activity-Log.zip
-    # rm NX-Activity-Log.zip
+echo "下载 NX-Activity-Log..."
+nx_activity_release=$(curl -sL https://api.github.com/repos/zdm65477730/NX-Activity-Log/releases/latest)
+nx_activity_tag=$(echo "$nx_activity_release" | jq -r '.tag_name')
+echo "NX-Activity-Log $nx_activity_tag" >> ../description.txt
+
+nx_activity_url=$(echo "$nx_activity_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$nx_activity_url" -o NX-Activity-Log.nro
+if [ $? -eq 0 ]; then
     mv NX-Activity-Log.nro ./switch
+    echo "NX-Activity-Log 下载\033[32m成功\033[0m"
+else
+    echo "NX-Activity-Log 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest NXThemesInstaller from https://github.com/exelix11/SwitchThemeInjector/releases/latest
-curl -sL https://api.github.com/repos/exelix11/SwitchThemeInjector/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo NXThemesInstaller {} >> ../description.txt
-curl -sL https://api.github.com/repos/exelix11/SwitchThemeInjector/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o NXThemesInstaller.nro
-if [ $? -ne 0 ]; then
-    echo "NXThemesInstaller download\033[31m failed\033[0m."
-else
-    echo "NXThemesInstaller download\033[32m success\033[0m."
+echo "下载 NXThemesInstaller..."
+nx_themes_release=$(curl -sL https://api.github.com/repos/exelix11/SwitchThemeInjector/releases/latest)
+nx_themes_tag=$(echo "$nx_themes_release" | jq -r '.tag_name')
+echo "NXThemesInstaller $nx_themes_tag" >> ../description.txt
+
+nx_themes_url=$(echo "$nx_themes_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$nx_themes_url" -o NXThemesInstaller.nro
+if [ $? -eq 0 ]; then
     mv NXThemesInstaller.nro ./switch
-fi
-### Fetch lastest Moonlight-Switch from https://github.com/XITRIX/Moonlight-Switch/releases/tag/v1.0.0
-curl -sL https://api.github.com/repos/XITRIX/Moonlight-Switch/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo Moonlight-Switch {} >> ../description.txt
-curl -sL https://api.github.com/repos/XITRIX/Moonlight-Switch/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o Moonlight-Switch.nro
-if [ $? -ne 0 ]; then
-    echo "Moonlight-Switch download\033[31m failed\033[0m."
+    echo "NXThemesInstaller 下载\033[32m成功\033[0m"
 else
-    echo "Moonlight-Switch download\033[32m success\033[0m."
+    echo "NXThemesInstaller 下载\033[31m失败\033[0m"
+fi
+
+echo "下载 Moonlight-Switch..."
+moonlight_release=$(curl -sL https://api.github.com/repos/XITRIX/Moonlight-Switch/releases/latest)
+moonlight_tag=$(echo "$moonlight_release" | jq -r '.tag_name')
+echo "Moonlight-Switch $moonlight_tag" >> ../description.txt
+
+moonlight_url=$(echo "$moonlight_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$moonlight_url" -o Moonlight-Switch.nro
+if [ $? -eq 0 ]; then
     mv Moonlight-Switch.nro ./switch
-fi
-### Fetch lastest JKSV from https://github.com/J-D-K/JKSV/releases/latest
-curl -sL https://api.github.com/repos/J-D-K/JKSV/releases/latest \
-  | jq '.name' \
-  | xargs -I {} echo JKSV {} >> ../description.txt
-curl -sL https://api.github.com/repos/J-D-K/JKSV/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o JKSV.nro
-if [ $? -ne 0 ]; then
-    echo "JKSV download\033[31m failed\033[0m."
+    echo "Moonlight-Switch 下载\033[32m成功\033[0m"
 else
-    echo "JKSV download\033[32m success\033[0m."
+    echo "Moonlight-Switch 下载\033[31m失败\033[0m"
+fi
+
+echo "下载 JKSV..."
+jksv_release=$(curl -sL https://api.github.com/repos/J-D-K/JKSV/releases/latest)
+jksv_name=$(echo "$jksv_release" | jq -r '.name')
+echo "$jksv_name" >> ../description.txt
+
+jksv_url=$(echo "$jksv_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$jksv_url" -o JKSV.nro
+if [ $? -eq 0 ]; then
     mv JKSV.nro ./switch
+    echo "JKSV 下载\033[32m成功\033[0m"
+else
+    echo "JKSV 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest tencent-switcher-gui from https://github.com/CaiMiao/Tencent-switcher-GUI/releases/latest
-curl -sL https://api.github.com/repos/CaiMiao/Tencent-switcher-GUI/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo tencent-switcher-gui {} >> ../description.txt
-curl -sL https://api.github.com/repos/CaiMiao/Tencent-switcher-GUI/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o tencent-switcher-gui.nro
-if [ $? -ne 0 ]; then
-    echo "tencent-switcher-gui download\033[31m failed\033[0m."
-else
-    echo "tencent-switcher-gui download\033[32m success\033[0m."
+echo "下载 tencent-switcher-gui..."
+tencent_release=$(curl -sL https://api.github.com/repos/CaiMiao/Tencent-switcher-GUI/releases/latest)
+tencent_tag=$(echo "$tencent_release" | jq -r '.tag_name')
+echo "tencent-switcher-gui $tencent_tag" >> ../description.txt
+
+tencent_url=$(echo "$tencent_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$tencent_url" -o tencent-switcher-gui.nro
+if [ $? -eq 0 ]; then
     mv tencent-switcher-gui.nro ./switch
+    echo "tencent-switcher-gui 下载\033[32m成功\033[0m"
+else
+    echo "tencent-switcher-gui 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest Breeze from https://github.com/tomvita/Breeze-Beta/releases/latest
-curl -sL https://api.github.com/repos/tomvita/Breeze-Beta/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo Breeze {} >> ../description.txt
-curl -sL https://api.github.com/repos/tomvita/Breeze-Beta/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o Breeze.zip
-if [ $? -ne 0 ]; then
-    echo "Breeze download\033[31m failed\033[0m."
-else
-    echo "Breeze download\033[32m success\033[0m."
+echo "下载 Breeze..."
+breeze_release=$(curl -sL https://api.github.com/repos/tomvita/Breeze-Beta/releases/latest)
+breeze_tag=$(echo "$breeze_release" | jq -r '.tag_name')
+echo "Breeze $breeze_tag" >> ../description.txt
+
+breeze_url=$(echo "$breeze_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$breeze_url" -o Breeze.zip
+if [ $? -eq 0 ]; then
     unzip -oq Breeze.zip
     rm Breeze.zip
+    echo "Breeze 下载\033[32m成功\033[0m"
+else
+    echo "Breeze 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest AtmoPackUpdater from https://github.com/PoloNX/AtmoPackUpdater/releases
-curl -sL https://api.github.com/repos/PoloNX/AtmoPackUpdater/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo AtmoPackUpdater {} >> ../description.txt
-curl -sL https://api.github.com/repos/PoloNX/AtmoPackUpdater/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o AtmoPackUpdater.nro
-if [ $? -ne 0 ]; then
-    echo "AtmoPackUpdater download\033[31m failed\033[0m."
-else
-    echo "AtmoPackUpdater download\033[32m success\033[0m."
+echo "下载 AtmoPackUpdater..."
+atmo_updater_release=$(curl -sL https://api.github.com/repos/PoloNX/AtmoPackUpdater/releases/latest)
+atmo_updater_tag=$(echo "$atmo_updater_release" | jq -r '.tag_name')
+echo "AtmoPackUpdater $atmo_updater_tag" >> ../description.txt
+
+atmo_updater_url=$(echo "$atmo_updater_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$atmo_updater_url" -o AtmoPackUpdater.nro
+if [ $? -eq 0 ]; then
     mv AtmoPackUpdater.nro ./switch
+    echo "AtmoPackUpdater 下载\033[32m成功\033[0m"
+else
+    echo "AtmoPackUpdater 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest SwitchTime from https://github.com/3096/switch-time/releases
-curl -sL https://api.github.com/repos/3096/switch-time/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo switch-time {} >> ../description.txt
-curl -sL https://api.github.com/repos/3096/switch-time/releases/latest \
-  | jq '.assets' | jq '.[0].browser_download_url' \
-  | xargs -I {} curl -sL {} -o switch-time.nro
-if [ $? -ne 0 ]; then
-    echo "switch-time download\033[31m failed\033[0m."
-else
-    echo "switch-time download\033[32m success\033[0m."
+echo "下载 SwitchTime..."
+switch_time_release=$(curl -sL https://api.github.com/repos/3096/switch-time/releases/latest)
+switch_time_tag=$(echo "$switch_time_release" | jq -r '.tag_name')
+echo "switch-time $switch_time_tag" >> ../description.txt
+
+switch_time_url=$(echo "$switch_time_release" | jq -r '.assets[0].browser_download_url')
+curl -sL "$switch_time_url" -o switch-time.nro
+if [ $? -eq 0 ]; then
     mv switch-time.nro ./switch
+    echo "switch-time 下载\033[32m成功\033[0m"
+else
+    echo "switch-time 下载\033[31m失败\033[0m"
 fi
 
-### Fetch QuickNTP
+echo "下载 QuickNTP..."
 curl -sL https://raw.githubusercontent.com/huangqian8/SwitchPlugins/main/plugins/QuickNTP.zip -o QuickNTP.zip
-if [ $? -ne 0 ]; then
-    echo "QuickNTP download\033[31m failed\033[0m."
-else
-    echo "QuickNTP download\033[32m success\033[0m."
+if [ $? -eq 0 ]; then
     unzip -oq QuickNTP.zip
     rm QuickNTP.zip
+    echo "QuickNTP 下载\033[32m成功\033[0m"
+else
+    echo "QuickNTP 下载\033[31m失败\033[0m"
 fi
 
-### Fetch lastest theme-patches from https://github.com/exelix11/theme-patches
-git clone https://github.com/exelix11/theme-patches
-if [ $? -ne 0 ]; then
-    echo "theme-patches download\033[31m failed\033[0m."
-else
-    echo "theme-patches download\033[32m success\033[0m."
+echo "下载 theme-patches..."
+git clone -q https://github.com/exelix11/theme-patches
+if [ $? -eq 0 ]; then
     mv -f theme-patches/systemPatches themes/
     rm -rf theme-patches
-fi
-
-### Rename hekate_ctcaer_*.bin to payload.bin
-find . -name "*hekate_ctcaer*" -exec mv {} payload.bin \;
-if [ $? -ne 0 ]; then
-    echo "Rename hekate_ctcaer_*.bin to payload.bin\033[31m failed\033[0m."
+    echo "theme-patches 下载\033[32m成功\033[0m"
 else
-    echo "Rename hekate_ctcaer_*.bin to payload.bin\033[32m success\033[0m."
+    echo "theme-patches 下载\033[31m失败\033[0m"
 fi
 
-### Write hekate_ipl.ini in /bootloader/ directory
-cat > ./bootloader/hekate_ipl.ini << ENDOFFILE
+# -------------------------------------------
+### 配置文件处理
+echo "重命名 hekate_ctcaer 文件..."
+find . -name "*hekate_ctcaer*" -exec mv {} payload.bin \;
+if [ $? -eq 0 ]; then
+    echo "重命名成功"
+else
+    echo "重命名失败"
+fi
+
+echo "创建 hekate_ipl.ini..."
+cat > ./bootloader/hekate_ipl.ini << 'END'
 [config]
 autoboot=0
 autoboot_list=0
@@ -672,15 +554,10 @@ fss0=atmosphere/package3
 emummc_force_disable=1
 cal0blank=0
 {烤鸭包的自动构建}
-ENDOFFILE
-if [ $? -ne 0 ]; then
-    echo "Writing hekate_ipl.ini in ./bootloader/ directory\033[31m failed\033[0m."
-else
-    echo "Writing hekate_ipl.ini in ./bootloader/ directory\033[32m success\033[0m."
-fi
+END
 
-### Write nyx.ini in /bootloader/ directory
-cat > ./bootloader/nyx.ini << ENDOFFILE
+echo "创建 nyx.ini..."
+cat > ./bootloader/nyx.ini << 'END'
 [config]
 themebg=2d2d2d
 themecolor=320
@@ -692,15 +569,10 @@ umsemmcrw=0
 jcdisable=0
 jcforceright=0
 bpmpclock=1
-ENDOFFILE
-if [ $? -ne 0 ]; then
-    echo "Writing nyx.ini in ./bootloader/ directory\033[31m failed\033[0m."
-else
-    echo "Writing nyx.ini in ./bootloader/ directory\033[32m success\033[0m."
-fi
+END
 
-### write exosphere.ini in root of SD Card
-cat > ./exosphere.ini << ENDOFFILE
+echo "创建 exosphere.ini..."
+cat > ./exosphere.ini << 'END'
 [exosphere]
 debugmode=1
 debugmode_user=0
@@ -712,16 +584,10 @@ allow_writing_to_cal_sysmmc=0
 log_port=0
 log_baud_rate=115200
 log_inverted=0
-ENDOFFILE
-if [ $? -ne 0 ]; then
-    echo "Writing exosphere.ini in root of SD card\033[31m failed\033[0m."
-else
-    echo "Writing exosphere.ini in root of SD card\033[32m success\033[0m."
-fi
+END
 
-
-### Write emummc.txt in /atmosphere/hosts
-cat > ./atmosphere/hosts/emummc.txt << ENDOFFILE
+echo "创建 hosts 文件..."
+cat > ./atmosphere/hosts/emummc.txt << 'END'
 # Block Nintendo Servers
 127.0.0.1 *nintendo.*
 127.0.0.1 *nintendo-europe.com
@@ -732,23 +598,11 @@ cat > ./atmosphere/hosts/emummc.txt << ENDOFFILE
 95.216.149.205 *conntest.nintendowifi.net
 95.216.149.205 *ctest.cdn.nintendo.net
 95.216.149.205 *90dns.test
-ENDOFFILE
+END
 cp ./atmosphere/hosts/emummc.txt ./atmosphere/hosts/sysmmc.txt
-if [ $? -ne 0 ]; then
-    echo "Writing emummc.txt and sysmmc.txt in ./atmosphere/hosts\033[31m failed\033[0m."
-else
-    echo "Writing emummc.txt and sysmmc.txt in ./atmosphere/hosts\033[32m success\033[0m."
-fi
 
-### Write boot.ini in root of SD Card
-if [ $? -ne 0 ]; then
-    echo "Writing boot.ini in root of SD card\033[31m failed\033[0m."
-else
-    echo "Writing boot.ini in root of SD card\033[32m success\033[0m."
-fi
-
-### Write system_settings.ini in /atmosphere/config
-cat > ./atmosphere/config/system_settings.ini << ENDOFFILE
+echo "创建 system_settings.ini..."
+cat > ./atmosphere/config/system_settings.ini << 'END'
 [eupld]
 ; 禁用将错误报告上传到任天堂
 upload_enabled = u8!0x0
@@ -769,7 +623,7 @@ dmnt_cheats_enabled_by_default = u8!0x0
 ; 1秒=1000毫秒，转换16进制
 fatal_auto_reboot_interval = u64!0x2710
 
-; 使电源菜单的“重新启动”按钮重新启动到payload
+; 使电源菜单的"重新启动"按钮重新启动到payload
 ; 设置"normal"正常重启l 设置"rcm"重启RCM，
 ; power_menu_reboot_function = str!payload
 
@@ -787,76 +641,14 @@ usb30_force_enabled = u8!0x1
 [tc]
 sleep_enabled = u8!0x0
 holdable_tskin = u32!0xEA60
-tskin_rate_table_console = str!”[[-1000000, 28000, 0, 0], [28000, 42000, 0, 51], [42000, 48000, 51, 102], [48000, 55000, 102, 153], [55000, 60000, 153, 255], [60000, 68000, 255, 255]]”
-tskin_rate_table_handheld = str!”[[-1000000, 28000, 0, 0], [28000, 42000, 0, 51], [42000, 48000, 51, 102], [48000, 55000, 102, 153], [55000, 60000, 153, 255], [60000, 68000, 255, 255]]”
-ENDOFFILE
-if [ $? -ne 0 ]; then
-    echo "Writing system_settings.ini in ./atmosphere/config\033[31m failed\033[0m."
-else
-    echo "Writing system_settings.ini in ./atmosphere/config\033[32m success\033[0m."
-fi
+tskin_rate_table_console = str!"[[-1000000, 28000, 0, 0], [28000, 42000, 0, 51], [42000, 48000, 51, 102], [48000, 55000, 102, 153], [55000, 60000, 153, 255], [60000, 68000, 255, 255]]"
+tskin_rate_table_handheld = str!"[[-1000000, 28000, 0, 0], [28000, 42000, 0, 51], [42000, 48000, 51, 102], [48000, 55000, 102, 153], [55000, 60000, 153, 255], [60000, 68000, 255, 255]]"
+END
 
-
-
-### Fetch lastest Ultrahand-Overlay from https://github.com/ppkantorski/Ultrahand-Overlay/releases/latest
-# curl -sL https://api.github.com/repos/ppkantorski/Ultrahand-Overlay/releases/latest \
-#   | jq '.tag_name' \
-#   | xargs -I {} echo Ultrahand-Overlay {} >> ../description.txt
-# curl -sL https://api.github.com/repos/ppkantorski/Ultrahand-Overlay/releases/latest \
-#   | jq '.assets' | jq '.[1].browser_download_url' \
-#   | xargs -I {} curl -sL {} -o ovlmenu.ovl
-# if [ $? -ne 0 ]; then
-#     echo "Ultrahand-Overlay download\033[31m failed\033[0m."
-# else
-#     echo "Ultrahand-Overlay download\033[32m success\033[0m."
-#     mv ovlmenu.ovl ./switch/.overlays
-# fi
-
-# curl -sL https://api.github.com/repos/ndeadly/MissionControl/releases/latest \
-#   | jq '.tag_name' \
-#   | xargs -I {} echo MissionControl {} >> ../description.txt
-
-# curl -sL https://api.github.com/repos/ndeadly/MissionControl/releases/latest \
-#   | jq '.assets' | jq '.[0].browser_download_url' \
-#   | xargs -I {} curl -sL {} -o MissionControl.zip
-
-# if [ $? -ne 0 ]; then
-#     echo "MissionControl download\033[31m failed\033[0m."
-# else
-#     echo "MissionControl download\033[32m success\033[0m."
-#     unzip -oq MissionControl.zip
-#     rm MissionControl.zip
-# fi
-
-
-
-# ### Write config.ini in Ultrahand-Overlay
-# mkdir -p config/ultrahand
-# cat > ./config/ultrahand/config.ini << ENDOFFILE
-# [ultrahand]
-# default_lang = zh-cn
-# default_menu = overlays
-# last_menu = overlays
-# in_overlay = false
-# key_combo = L+DDOWN
-# hide_user_guide = false
-# clean_version_labels = true
-# hide_overlay_versions = false
-# hide_package_versions = false
-# datetime_format = '%a %T'
-# hide_clock = false
-# hide_battery = true
-# hide_pcb_temp = true
-# hide_soc_temp = true
-# ENDOFFILE
-# if [ $? -ne 0 ]; then
-#     echo "Write config.ini in Ultrahand-Overlay\033[31m failed\033[0m."
-# else
-#     echo "Write config.ini in Ultrahand-Overlay\033[32m success\033[0m."
-# fi
-
-###
-cat >> ../description.txt << ENDOFFILE
+# -------------------------------------------
+### 其他组件
+echo "添加描述信息..."
+cat >> ../description.txt << 'END'
 DBI 647 中文版
 EdiZon
 HekateToolbox
@@ -868,104 +660,62 @@ StatusMonitor
 sys-con
 tencent-switcher-gui
 Tinfoil-17v3
-ENDOFFILE
+END
 
-### Fetch lastest Zing from https://github.com/tomvita/Zing/releases/latest
-curl -sL https://api.github.com/repos/tomvita/Zing/releases/latest \
-  | jq '.tag_name' \
-  | xargs -I {} echo Zing {} >> ../description.txt
-curl -sL https://api.github.com/repos/tomvita/Zing/releases/latest \
-  | jq '.assets' | jq '.[1].browser_download_url' \
-  | xargs -I {} curl -sL {} -o Zing.ovl
-if [ $? -ne 0 ]; then
-    echo "Zing download\033[31m failed\033[0m."
-else
-    echo "Zing download\033[32m success\033[0m."
+echo "下载 Zing..."
+zing_release=$(curl -sL https://api.github.com/repos/tomvita/Zing/releases/latest)
+zing_tag=$(echo "$zing_release" | jq -r '.tag_name')
+echo "Zing $zing_tag" >> ../description.txt
+
+zing_url=$(echo "$zing_release" | jq -r '.assets[1].browser_download_url')
+curl -sL "$zing_url" -o Zing.ovl
+if [ $? -eq 0 ]; then
     mv Zing.ovl ./switch/.overlays
+    echo "Zing 下载\033[32m成功\033[0m"
+else
+    echo "Zing 下载\033[31m失败\033[0m"
 fi
 
-
-### Fetch sys-tune
+echo "下载 sys-tune..."
 curl -sL https://raw.githubusercontent.com/huangqian8/SwitchPlugins/main/plugins/sys-tune.zip -o sys-tune.zip
-if [ $? -ne 0 ]; then
-    echo "sys-tune download\033[31m failed\033[0m."
-else
-    echo "sys-tune download\033[32m success\033[0m."
+if [ $? -eq 0 ]; then
     unzip -oq sys-tune.zip
     rm sys-tune.zip
+    echo "sys-tune 下载\033[32m成功\033[0m"
+else
+    echo "sys-tune 下载\033[31m失败\033[0m"
 fi
 
-### Fetch sys-patch
+echo "下载 sys-patch..."
 curl -sL https://raw.githubusercontent.com/huangqian8/SwitchPlugins/main/plugins/sys-patch.zip -o sys-patch.zip
-if [ $? -ne 0 ]; then
-    echo "sys-patch download\033[31m failed\033[0m."
-else
-    echo "sys-patch download\033[32m success\033[0m."
+if [ $? -eq 0 ]; then
     unzip -oq sys-patch.zip
     rm sys-patch.zip
-fi
-
-### Fetch Ultra_Tuner
-# curl -sL https://raw.github.com/烤鸭包的2025/SwitchScript/main/plugins/Ultrahand/Ultra_Tuner.zip -o Ultra_Tuner.zip
-# if [ $? -ne 0 ]; then
-#     echo "Ultra_Tuner download\033[31m failed\033[0m."
-# else
-#     echo "Ultra_Tuner download\033[32m success\033[0m."
-#     unzip -oq Ultra_Tuner.zip
-#     rm Ultra_Tuner.zip
-# fi
-
-## Fetch Switch-OC-Suite(hnayzdf ver.) from https://www.tekqart.com/thread-370908-1-1.html
-# curl -sL https://raw.github.com/烤鸭包的2025/SwitchScript/main/plugins/Switch-OC-Suite.zip -o Switch-OC-Suite.zip
-# if [ $? -ne 0 ]; then
-#    echo "Switch-OC-Suite download\033[31m failed\033[0m."
-# else
-#    echo "Switch-OC-Suite download\033[32m success\033[0m."
-#    unzip -oq Switch-OC-Suite.zip
-#    rm Switch-OC-Suite.zip
-# fi
-
-# ### Fetch lastest Switch-OC-Suite from https://github.com/hanai3Bi/Switch-OC-Suite/releases/latest
-# curl -sL https://api.github.com/repos/hanai3Bi/Switch-OC-Suite/releases/latest \
-#   | jq '.tag_name' \
-#   | xargs -I {} echo Switch-OC-Suite {} >> ../description.txt
-# curl -sL https://api.github.com/repos/hanai3Bi/Switch-OC-Suite/releases/latest \
-#   | jq '.assets' | jq '.[0].browser_download_url' \
-#   | xargs -I {} curl -sL {} -o AIO.zip
-# if [ $? -ne 0 ]; then
-#     echo "Switch-OC-Suite download\033[31m failed\033[0m."
-# else
-#     echo "Switch-OC-Suite download\033[32m success\033[0m."
-#     unzip -oq AIO.zip
-#     rm AIO.zip
-# fi
-
-
-# 写入到 "烤鸭包的自动构建.txt" 文件中
-cat ../description.txt > 烤鸭包的自动构建.txt << ENDOFFILE
-$atmosphere_name+$hekate_name
-ENDOFFILE
-if [ $? -ne 0 ]; then
-    echo "Writing 烤鸭包的自动构建.txt\033[31m failed\033[0m."
+    echo "sys-patch 下载\033[32m成功\033[0m"
 else
-    echo "Writing 烤鸭包的自动构建.txt\033[32m success\033[0m."
+    echo "sys-patch 下载\033[31m失败\033[0m"
 fi
 
-### Fetch Chinese lang
+# -------------------------------------------
+### 语言文件
+echo "下载中文语言文件..."
 mkdir -p switch/.overlays/lang/fastCFWswitch
 curl -sL https://raw.githubusercontent.com/zdm65477730/fastCFWswitch/master/lang/zh-Hans.json -o switch/.overlays/lang/fastCFWswitch/zh-Hans.json
 curl -sL https://raw.githubusercontent.com/zdm65477730/fastCFWswitch/master/lang/zh-Hant.json -o switch/.overlays/lang/fastCFWswitch/zh-Hant.json
+
 mkdir -p switch/.overlays/lang/QuickNTP
 curl -sL https://raw.githubusercontent.com/zdm65477730/QuickNTP/master/lang/zh-Hans.json -o switch/.overlays/lang/QuickNTP/zh-Hans.json
 curl -sL https://raw.githubusercontent.com/zdm65477730/QuickNTP/master/lang/zh-Hant.json -o switch/.overlays/lang/QuickNTP/zh-Hant.json
+
 mkdir -p switch/.overlays/lang/sys-clk
 curl -sL https://raw.githubusercontent.com/zdm65477730/sys-clk/develop/overlay/lang/zh-Hans.json -o switch/.overlays/lang/sys-clk/zh-Hans.json
 curl -sL https://raw.githubusercontent.com/zdm65477730/sys-clk/develop/overlay/lang/zh-Hant.json -o switch/.overlays/lang/sys-clk/zh-Hant.json
+
 mkdir -p config/ultrahand/lang
 curl -sL https://raw.githubusercontent.com/ppkantorski/Ultrahand-Overlay/main/lang/zh-cn.json -o config/ultrahand/lang/zh-cn.json
 
-### Write sort.cfg in /config/Tesla-Menu/sort.cfg
-cat > ./config/Tesla-Menu/sort.cfg << ENDOFFILE
+echo "创建 Tesla-Menu 排序配置..."
+cat > ./config/Tesla-Menu/sort.cfg << 'END'
 EdiZon
 ovl-sysmodules
 StatusMonitor
@@ -978,9 +728,14 @@ QuickNTP
 Zing
 sys-patch
 linkalho
-ENDOFFILE
+END
 
 # -------------------------------------------
+### 完成
+echo "创建构建信息文件..."
+cat ../description.txt > "烤鸭包的自动构建.txt"
 
 echo ""
-echo "\033[32mYour Switch SD card is prepared! 烤鸭包的的自动构建已经完成\033[0m"
+echo "\033[32m您的 Switch SD 卡已准备就绪! 烤鸭包的自动构建已完成\033[0m"
+echo "包含以下组件:"
+cat ../description.txt
