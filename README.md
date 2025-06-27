@@ -12,7 +12,8 @@
 
 旨在为修改过的 Switch 提供极致的日常游戏体验。
 
-![QQ20241222-140504](https://github.com/user-attachments/assets/80abe25b-291c-463d-afca-789158de3297)
+![image](https://github.com/user-attachments/assets/28ccd045-958c-49cd-9de6-f8a5e6877ad9)
+
 
 
 
