@@ -1,7 +1,7 @@
 # RoastDuck CFWPack
 
 ![License](https://img.shields.io/badge/license-GPLv2.0-brightgreen.svg)
-![Domain](https://img.shields.io/badge/Domain-Switch%20Software%20Development-blue.svg)
+![Domain](https://img.shields.io/badge/Domain%20Software%20Development-blue.svg)
 ![Language](https://img.shields.io/badge/Language-C%20%2F%20C%2B%2B-lightgrey.svg)
 [![Latest Version](https://img.shields.io/github/v/release/sskyNS/RoastDuck-CFWPack?label=latest%20version&color=blue)](https://github.com/sskyNS/RoastDuck-CFWPack/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/sskyNS/RoastDuck-CFWPack/total?color=6f42c1)](https://github.com/sskyNS/RoastDuck-CFWPack/graphs/traffic)
