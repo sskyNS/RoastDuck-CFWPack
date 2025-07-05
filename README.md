@@ -74,6 +74,7 @@
 
 ## 支持我们（已弃用)
 `The path has been deprecated, if you want to support it, you just need to star the project, thank you for your support`
+
 如果你喜欢我们的项目并想看到它不断进步，你可以通过以下Ko-fi按钮对我们进行赞助：
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/M4M3P9CWM)
