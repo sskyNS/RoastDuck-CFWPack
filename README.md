@@ -8,7 +8,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/sskyNS/RoastDuck-CFWPack?color=222222)](https://github.com/sskyNS/RoastDuck-CFWPack/issues)
 [![GitHub stars](https://img.shields.io/github/stars/sskyNS/RoastDuck-CFWPack)](https://github.com/sskyNS/RoastDuck-CFWPack/stargazers)
 
-**RoastDuck CFWPack** 是一个专为 Nintendo Switch 设备定制，整合了多个自制系统插件的中文AMS CFW Pack。
+**RoastDuck CFWPack** 是一个专为 `Nintendo Switch` 设备定制，整合了多个自制系统插件的**中文**`AMS CFW Pack`。
 
 旨在为修改过的 Switch 提供极致的日常游戏体验和功能拓展。
 
@@ -20,16 +20,16 @@
 ## 特色
 
 - 集成了一系列精选的自制插件。
-- 提供繁体中文和简体中文版本，专为中文用户设计。
+- 提供繁体中文和简体中文版本，专为**中文**用户设计。
 - 内置独特的防封禁功能，确保联网安全。
 - 强调支持购买正版游戏，以维持游戏产业生态。
 
 ## 安装指南
 
-1. 确保你的 Nintendo Switch 已经被黑客入侵。
+1. 确保你的 `Nintendo Switch` 已经被黑客入侵。
 2. 从本项目的 [Releases](https://github.com/sskyNS/RoastDuck-CFWPack/releases) 页面下载最新版本。
 3. 将下载的文件解压缩到 SD 卡的根目录中。
-4. 按照常规流程启动您的设备进入 CFW 模式（如果是MOD Chip版本，直接启动电源键Power即可，这一般适用于Mariko机型和部分被修补过的初代机型）。
+4. 按照常规流程启动您的设备进入 CFW 模式（如果是`Mod Chip`版本，直接启动电源键`Power`即可，这一般适用于`Mariko机型`和部分被**修补**过的初代机型）。
 
 ```初次使用请下载repo的[RDPv8.9.0 Instructions.7z]进行阅读，以确保你安装的没有问题```
 
