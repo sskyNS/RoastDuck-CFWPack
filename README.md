@@ -10,7 +10,7 @@
 
 **RoastDuck CFWPack** 是一个专为 `Nintendo Switch` 设备定制，整合了多个自制系统插件的**中文**`AMS CFW Pack`。
 
-旨在为修改过的 Switch 提供极致的日常游戏体验和功能拓展。
+旨在为修改过的 `Switch` 提供极致的日常游戏体验和功能拓展。
 
 ![image](https://github.com/user-attachments/assets/28ccd045-958c-49cd-9de6-f8a5e6877ad9)
 
@@ -28,7 +28,7 @@
 
 1. 确保你的 `Nintendo Switch` 已经被黑客入侵。
 2. 从本项目的 [Releases](https://github.com/sskyNS/RoastDuck-CFWPack/releases) 页面下载最新版本。
-3. 将下载的文件解压缩到 SD 卡的根目录中。
+3. 将下载的文件解压缩到` SD 卡`的根目录中。
 4. 按照常规流程启动您的设备进入 CFW 模式（如果是`Mod Chip`版本，直接启动电源键`Power`即可，这一般适用于`Mariko机型`和部分被**修补**过的初代机型）。
 
 ```初次使用请下载repo的[RDPv8.9.0 Instructions.7z]进行阅读，以确保你安装的没有问题```
@@ -40,10 +40,11 @@
 ## 使用说明
 
 启动 **RoastDuck CFWPack** 非常简单：
+
 ![image](https://github.com/sskyNS/RoastDuck-CFWPack/assets/121209531/db431f1c-9b19-4406-b32d-10720a5ec886)
 
-1. 确认所有文件已复制到 SD 卡的正确路径。
-2. 重启你的 Switch 进入bootloader模式。
+1. 确认所有文件已复制到 `SD 卡`的正确路径。
+2. 重启你的 `Switch` 进入`bootloader`模式。
 3. 在自制菜单中选择相应功能进行启动。
 
 更多信息，请访问我们的 [BiliBili频道](https://space.bilibili.com/679023184) 获取更新内容和使用教程。
