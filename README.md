@@ -33,9 +33,9 @@
 
 ```初次使用请下载repo的[RDPv8.9.0 Instructions.7z]进行阅读，以确保你安装的没有问题```
 
-下载地址：- [Instructions](https://github.com/sskyNS/RoastDuck-CFWPack/blob/main/RDPv8.9.0%20Instructions.7z.001)
+**下载地址**：[Instructions](https://github.com/sskyNS/RoastDuck-CFWPack/blob/main/RDPv8.9.0%20Instructions.7z.001)
 
-详细的安装流程请参考我们的 [安装文档](INSTALL.md)。
+`详细的安装流程请参考我们的` [安装文档](INSTALL.md)。
 
 ## 使用说明
 
