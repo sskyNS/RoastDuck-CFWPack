@@ -31,7 +31,7 @@
 3. 将下载的文件解压缩到 SD 卡的根目录中。
 4. 按照常规流程启动您的设备进入 CFW 模式（如果是MOD Chip版本，直接启动电源键Power即可，这一般适用于Mariko机型和部分被修补过的初代机型）。
 
-```初次使用请下载repo的- [RDPv8.9.0 Instructions.7z](https://github.com/sskyNS/RoastDuck-CFWPack/blob/main/RDPv8.9.0%20Instructions.7z.001)进行阅读，以确保你安装的没有问题```
+```初次使用请下载repo的**[RDPv8.9.0 Instructions.7z]**进行阅读，以确保你安装的没有问题```
 
 详细的安装流程请参考我们的 [安装文档](INSTALL.md)。
 
