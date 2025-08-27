@@ -40,10 +40,10 @@
 ## 使用说明
 
 启动 **RoastDuck CFWPack** 非常简单：
-
-![image](https://github.com/sskyNS/RoastDuck-CFWPack/assets/121209531/db431f1c-9b19-4406-b32d-10720a5ec886)
+![2025010604341200-57B4628D2267231D57E0FC1078C0596D](https://github.com/user-attachments/assets/0d9a78ae-42d5-4006-80ce-43e98640edf5)
 ![2025010603365300-57B4628D2267231D57E0FC1078C0596D](https://github.com/user-attachments/assets/bde85e1c-fe08-4829-ab00-76a217271c85)
 ![2025010603342800-57B4628D2267231D57E0FC1078C0596D](https://github.com/user-attachments/assets/00a26040-7acd-476b-ac05-ebccc240e897)
+![9cd10e52118046111acaf986ae2d7995679023184](https://github.com/user-attachments/assets/88ffea07-72e4-4b0c-9fd1-378038a94dca)
 
 1. 确认所有文件已复制到 `SD 卡`的正确路径。
 2. 重启你的 `Switch` 进入`bootloader`模式。
