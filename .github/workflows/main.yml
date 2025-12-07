@@ -3,7 +3,7 @@ name: Atmosphere Builder
 on:
   workflow_dispatch: # 允许手动触发
   schedule:
-    - cron: '0 0 * * *' # 每天UTC时间0点运行
+    - cron: '0 0 * * 0' # 每周日UTC时间0点运行（每周一次）
 
 jobs:
   build-atmosphere:
@@ -12,6 +12,10 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    
+    - name: Set up date
+      id: date
+      run: echo "formattedDate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       
     - name: Set up environment
       run: |
@@ -23,7 +27,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: atmosphere-package
+        name: atmosphere-package-${{ steps.date.outputs.formattedDate }}
         path: SwitchSD_*.zip
         
     - name: Create Release
@@ -31,8 +35,10 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: SwitchSD_*.zip
-        tag_name: build-${{ github.run_id }}
-        name: "Atmosphere Package - ${{ steps.date.outputs.formattedDate }}"
-        body: "Automatically built Atmosphere package for Nintendo Switch"
+        tag_name: weekly-${{ steps.date.outputs.formattedDate }}
+        name: "Weekly Atmosphere Package - ${{ steps.date.outputs.formattedDate }}"
+        body: "Weekly built Atmosphere package for Nintendo Switch"
+        draft: false
+        prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
