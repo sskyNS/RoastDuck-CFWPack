@@ -73,6 +73,7 @@
 
 - [ppkantorski](https://github.com/ppkantorski)
 - [Cooler3D](https://github.com/rashevskyv/4IFIR)
+- [Cooler3D](https://github.com/Horizon-OC/Horizon-OC)
 - [XorTroll](https://github.com/XorTroll)
 - ...
 
