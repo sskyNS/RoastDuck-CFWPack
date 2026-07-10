@@ -59,6 +59,7 @@
 
 - [Ultrahand](https://github.com/ppkantorski/Ultrahand-Overlay)
 - [sys-clk](https://github.com/retronx-team/sys-clk)
+- [horizon-oc.github.io](https://github.com/Horizon-OC/Horizon-OC)
 - ...
 
 更完整的贡献者列表请查看 [贡献者名单](CONTRIBUTORS.md)。
@@ -73,7 +74,7 @@
 
 - [ppkantorski](https://github.com/ppkantorski)
 - [Cooler3D](https://github.com/rashevskyv/4IFIR)
-- [Cooler3D](https://github.com/Horizon-OC/Horizon-OC)
+- [horizon-oc.github.io](https://github.com/Horizon-OC/Horizon-OC)
 - [XorTroll](https://github.com/XorTroll)
 - ...
 
